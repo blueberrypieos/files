@@ -1,0 +1,19 @@
+#!/usr/bin/make -f
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright (c) 2026 The Blueberry Pie OS Authors
+
+include /usr/share/pietoolchain/rules.mk
+
+ETC := protocols services rpc
+MAN := 5 7 8
+
+install:
+	install -d $(ROOT)/etc
+	set -e; for f in $(ETC); do install -m 644 $(SRCROOT)/private/etc/$$f $(ROOT)/etc/$$f; done
+	install -m 644 debian/networks $(ROOT)/etc/networks
+	set -e; for s in $(MAN); do \
+		install -d $(ROOT)/usr/share/man/man$$s; \
+		install -m 644 $(SRCROOT)/usr/share/man/man$$s/*.$$s $(ROOT)/usr/share/man/man$$s/; \
+	done
+
+.PHONY: install
